@@ -19,7 +19,7 @@ echo "RANLIB=$RANLIB"
 if [ "${CFLAGS+set}" != "set" ]; then
   case "$CC" in
     *gcc*|*clang*)
-      CFLAGS=-O2
+      CFLAGS="-O2"
       ;;
     *)
       CFLAGS=-O
@@ -35,3 +35,10 @@ if test -f $LIB; then rm $LIB; fi
 && "$CC" -c $CFLAGS -o $SRC/runtime.o -I . $SRC/runtime.c \
 && "$AR" cr $LIB $SRC/data.o $SRC/runtime.o \
 && "$RANLIB" $LIB
+
+LIB=libBlocksRuntime.so
+SRC=BlocksRuntime
+if test -f $LIB; then rm $LIB; fi
+"$CC" -c $CFLAGS -o $SRC/data.do $SRC/data.c \
+&& "$CC" -c $CFLAGS -o $SRC/runtime.do -I . $SRC/runtime.c \
+&& "$CC" -shared -o $LIB $SRC/data.do $SRC/runtime.do
